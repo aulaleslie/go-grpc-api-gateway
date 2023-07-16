@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/aulaleslie/go-grpc-api-gateway/pkg/asset_sub_group/pb"
@@ -28,6 +29,11 @@ func Create(ctx *gin.Context, c pb.AssetSubGroupServiceClient) {
 
 	if err != nil {
 		ctx.AbortWithError(http.StatusBadGateway, err)
+		return
+	}
+
+	if !res.Status {
+		ctx.AbortWithError(int(res.Data.Code), errors.New(res.Data.Message))
 		return
 	}
 

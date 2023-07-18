@@ -34,8 +34,7 @@ func Create(ctx *gin.Context, c pb.AssetSubGroupServiceClient) {
 
 	if !res.Status {
 		ctx.AbortWithError(int(res.Data.Code), errors.New(res.Data.Message))
-		return
 	}
 
-	ctx.JSON(http.StatusCreated, &res)
+	ctx.JSON(int(res.Data.Code), &res)
 }
